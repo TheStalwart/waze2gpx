@@ -36,9 +36,22 @@
             <span id="fileFormErrorBox"></span>
         </form>
 
-        <h2>Step 3: Download trip data in GPX format</h2>
+        <h2>Step 3: Adjust settings</h2>
         <p>
-            GPX file: <a id="downloadXmlLink" style="display: none;">account_activity_3.gpx</a>
+            <div>
+                <input type="checkbox" id="xmlFormatter" name="xmlFormatter" />
+                <label for="xmlFormatter">Format XML (much slower conversion and 60% larger output file size)</label>
+            </div>
+        </p>
+
+        <h2>Step 4: Download trip data in GPX format</h2>
+        <p>
+            <div>
+                <button id="generateXmlButton">Generate GPX file</button>
+            </div>
+            <div id="gpxFileLinkContainer" style="display: none;">
+                GPX file: <a id="downloadXmlLink">account_activity_3.gpx</a>
+            </div>
         </p>
         <pre>
             <code id="filePreview">

@@ -3,6 +3,7 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
 
     const fileInput = document.getElementById('fileUpload');
     const file = fileInput.files[0];
+    var parsedWazeData = null
 
     if ( ! file) {
         const errorMessage = 'No file selected!'
@@ -24,26 +25,36 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     reader.onload = function (e) {
         // Parse Waze CSV file
         const contents = e.target.result;
-        const parsedWazeData = parseWazeData(contents)
+        parsedWazeData = parseWazeData(contents)
 
-        // Convert the parsed data to XML format
-        const xmlContent = generateGPXString(parsedWazeData)
-        const formattedXMLContent = xmlFormatter(xmlContent) // very slow
-        // console.log('XML content:', xmlContent);
+        document.getElementById('generateXmlButton').addEventListener("click", function() {
+            // Convert the parsed data to XML format
+            var xmlContent = generateGPXString(parsedWazeData)
+            if (document.getElementById('xmlFormatter').checked) {
+                xmlContent = xmlFormatter(xmlContent) // very slow, therefore disabled by default
+                
+                // console.log('XML content:', xmlContent);
 
-        // Preview generated XML file
-        document.getElementById('filePreview').textContent = formattedXMLContent
-        hljs.highlightAll(); // very slow
+                // Preview generated XML file.
+                // Do not preview if it's a one-liner compact XML
+                document.getElementById('filePreview').textContent = xmlContent
 
-        // Create a blob from the XML content
-        const xmlBlob = new Blob([xmlContent], { type: 'application/xml' });
+                // Only highlight syntax if output is formatted
+                hljs.highlightAll(); // very slow, therefore disabled by default
+            }
 
-        // Create a download link for the XML file
-        const downloadXmlLink = document.getElementById('downloadXmlLink');
-        downloadXmlLink.href = URL.createObjectURL(xmlBlob);
-        downloadXmlLink.download = file.name.replace('.csv', '.gpx');
-        downloadXmlLink.style.display = 'inline';
-        downloadXmlLink.textContent = downloadXmlLink.download;
+            // Create a blob from the XML content
+            const xmlBlob = new Blob([xmlContent], { type: 'application/xml' });
+
+            // Create a download link for the XML file
+            const downloadXmlLink = document.getElementById('downloadXmlLink');
+            downloadXmlLink.href = URL.createObjectURL(xmlBlob);
+            downloadXmlLink.download = file.name.replace('.csv', '.gpx');
+            downloadXmlLink.textContent = downloadXmlLink.download;
+
+            // Unhide GPX file link container
+            document.getElementById('gpxFileLinkContainer').style.display = 'block';
+        }, false);
     };
 
     reader.readAsText(file);
