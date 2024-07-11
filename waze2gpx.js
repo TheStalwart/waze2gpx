@@ -83,7 +83,7 @@ function parseWazeData(csvString) {
         return { 'dateTime': dateTime, 'trekPoints': trekPoints }
     })
 
-    console.log('Location details:', locationDetailsParsedEntries);
+    // console.log('Location details:', locationDetailsParsedEntries);
 
     return locationDetailsParsedEntries
 }
