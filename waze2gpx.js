@@ -4,6 +4,7 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     const fileInput = document.getElementById('fileUpload');
     const file = fileInput.files[0];
     var parsedWazeData = null
+    var filteredWazeData = null
 
     if ( ! file) {
         const errorMessage = 'No file selected!'
@@ -27,9 +28,27 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
         const contents = e.target.result;
         parsedWazeData = parseWazeData(contents)
 
+        let firstTrip = parsedWazeData[0]
+        let firstTripDateFormattedForInput = `${firstTrip.dateTime.getUTCFullYear()}-${(firstTrip.dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${firstTrip.dateTime.getUTCDate().toString().padStart(2, '0')}`
+        let lastTrip = parsedWazeData[parsedWazeData.length - 1]
+        let lastTripDateFormattedForInput = `${lastTrip.dateTime.getUTCFullYear()}-${(lastTrip.dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${lastTrip.dateTime.getUTCDate().toString().padStart(2, '0')}`
+        document.getElementById('startDateInput').disabled = false
+        document.getElementById('startDateInput').value = firstTripDateFormattedForInput
+        document.getElementById('startDateInput').min = firstTripDateFormattedForInput
+        document.getElementById('startDateInput').max = lastTripDateFormattedForInput
+        document.getElementById('startDateInput').onchange = function() { updateSelectedTripCounter() }
+        document.getElementById('endDateInput').disabled = false
+        document.getElementById('endDateInput').value = lastTripDateFormattedForInput
+        document.getElementById('endDateInput').min = firstTripDateFormattedForInput
+        document.getElementById('endDateInput').max = lastTripDateFormattedForInput
+        document.getElementById('endDateInput').onchange = function() { updateSelectedTripCounter() }
+
+        updateSelectedTripCounter()
+
+        document.getElementById('generateXmlButton').disabled = false
         document.getElementById('generateXmlButton').addEventListener("click", function() {
             // Convert the parsed data to XML format
-            var xmlContent = generateGPXString(parsedWazeData)
+            var xmlContent = generateGPXString(filteredWazeData)
             if (document.getElementById('xmlFormatter').checked) {
                 xmlContent = xmlFormatter(xmlContent) // very slow, therefore disabled by default
                 
@@ -58,6 +77,19 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     };
 
     reader.readAsText(file);
+    
+    function updateSelectedTripCounter() {
+        filteredWazeData = parsedWazeData.filter((trip) => {
+            let filterStartDateComponents = document.getElementById('startDateInput').value.split('-')
+            let filterStartDate = new Date(Date.UTC(filterStartDateComponents[0], filterStartDateComponents[1] - 1, filterStartDateComponents[2]))
+            let filterEndDateComponents = document.getElementById('endDateInput').value.split('-')
+            let filterEndDate = new Date(Date.UTC(filterEndDateComponents[0], filterEndDateComponents[1] - 1, filterEndDateComponents[2], 23, 59, 60))
+
+            return ((trip.dateTime >= filterStartDate) && (trip.dateTime < filterEndDate))
+        });
+
+        document.getElementById('selectedTripCounter').innerText = filteredWazeData.length.toString()
+    }
 });
 
 function parseWazeData(csvString) {

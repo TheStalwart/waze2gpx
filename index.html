@@ -36,8 +36,13 @@
             <span id="fileFormErrorBox"></span>
         </form>
 
-        <h2>Step 3: Adjust settings</h2>
+        <h2>Step 3: Trim data and adjust settings</h2>
         <p>
+            <div>
+                Start date: <input type="date" id="startDateInput" name="start-date" disabled />
+                End date: <input type="date" id="endDateInput" name="end-date" disabled />
+                Selected trips: <span id="selectedTripCounter"></span>
+            </div>
             <div>
                 <input type="checkbox" id="xmlFormatter" name="xmlFormatter" />
                 <label for="xmlFormatter">Format XML (much slower conversion and 60% larger output file size)</label>
@@ -47,7 +52,7 @@
         <h2>Step 4: Download trip data in GPX format</h2>
         <p>
             <div>
-                <button id="generateXmlButton">Generate GPX file</button>
+                <button id="generateXmlButton" disabled>Generate GPX file</button>
             </div>
             <div id="gpxFileLinkContainer" style="display: none;">
                 GPX file: <a id="downloadXmlLink">account_activity_3.gpx</a>
