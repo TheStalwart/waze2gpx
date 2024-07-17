@@ -146,6 +146,9 @@ function parseWazeData(csvString) {
         return { 'dateTime': dateTime, 'trekPoints': trekPoints }
     })
 
+    document.getElementById('parsedTripCounter').innerText = locationDetailsParsedEntries.length.toString()
+    document.getElementById('parsedTripCounterContainer').style.display = 'block'
+
     // console.log('Location details:', locationDetailsParsedEntries);
 
     return locationDetailsParsedEntries
