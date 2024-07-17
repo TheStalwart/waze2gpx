@@ -10,3 +10,10 @@ body {
     right: 0;
 }
 
+#gpxFileLinkContainer {
+    display: none;
+}
+
+#filePreviewContainer {
+    display: none;
+}

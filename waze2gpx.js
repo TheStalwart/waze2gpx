@@ -72,7 +72,11 @@ function wazeCSVFileSubmitted(event) {
 
                 // Preview generated XML file.
                 // Do not preview if it's a one-liner compact XML
-                document.getElementById('filePreview').textContent = xmlContent
+                var filePreviewElement = document.getElementById('filePreview')
+                filePreviewElement.textContent = xmlContent
+
+                var filePreviewContainerElement = document.getElementById('filePreviewContainer')
+                filePreviewContainerElement.style.display = 'block'
 
                 // Only highlight syntax if output is formatted
                 hljs.highlightAll(); // very slow, therefore disabled by default
@@ -88,7 +92,7 @@ function wazeCSVFileSubmitted(event) {
             downloadXmlLink.textContent = downloadXmlLink.download;
 
             // Unhide GPX file link container
-            document.getElementById('gpxFileLinkContainer').style.display = 'block';
+            document.getElementById('gpxFileLinkContainer').style.display = 'inline';
         }, false);
     };
 
