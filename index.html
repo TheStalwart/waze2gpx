@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>waze2gpx: Waze trip history to GPX converter</title>
-        <script type="text/javascript" src="waze2gpx.js" defer></script>
+        <script type="module" src="waze2gpx.js" defer></script>
 
         <!--
             xml-formatter
@@ -20,6 +20,17 @@
         -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+        <!--
+            Leaflet
+            https://leafletjs.com/examples/quick-start/
+        -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
     </head>
 
     <body>
@@ -62,6 +73,8 @@
             <code id="filePreview">
             </code>
         </pre>
+
+        <div id="map" style="width: 80%; aspect-ratio: 4/3;"></div>
 
         <hr>
 

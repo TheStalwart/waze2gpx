@@ -1,4 +1,19 @@
-document.getElementById('fileForm').addEventListener('submit', function(event) {
+// https://leafletjs.com/reference.html
+var map = L.map('map').setView([57.0, 24.5], 6);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+var geoJSONLayer = null
+
+// https://github.com/placemark/togeojson
+import { gpx } from "https://unpkg.com/@tmcw/togeojson?module";
+
+window.onload = function () {
+    document.getElementById('fileForm').addEventListener('submit', wazeCSVFileSubmitted)
+}
+
+function wazeCSVFileSubmitted(event) {
     event.preventDefault(); // Prevent the form from submitting the traditional way
 
     const fileInput = document.getElementById('fileUpload');
@@ -49,6 +64,7 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
         document.getElementById('generateXmlButton').addEventListener("click", function() {
             // Convert the parsed data to XML format
             var xmlContent = generateGPXString(filteredWazeData)
+            renderGPXOnLeaflet(xmlContent)
             if (document.getElementById('xmlFormatter').checked) {
                 xmlContent = xmlFormatter(xmlContent) // very slow, therefore disabled by default
                 
@@ -90,7 +106,7 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
 
         document.getElementById('selectedTripCounter').innerText = filteredWazeData.length.toString()
     }
-});
+}
 
 function parseWazeData(csvString) {
     const sectionStrings = csvString.split("\n\n")
@@ -176,4 +192,20 @@ function generateGPXString(parsedWazeData) {
         + '</gpx>'
 
     return xmlHeader + gpxElement
+}
+
+function renderGPXOnLeaflet(gpxString) {
+    // console.log(`renderGPXOnLeaflet called with gpxString: ${gpxString}`)
+
+    if (geoJSONLayer) {
+        geoJSONLayer.remove()
+    }
+
+    var geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
+    // console.log(geoJSONData)
+
+    geoJSONLayer = L.geoJSON(geoJSONData)
+    geoJSONLayer.addTo(map)
+
+    map.fitBounds(geoJSONLayer.getBounds())
 }
