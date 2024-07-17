@@ -44,9 +44,9 @@ function wazeCSVFileSubmitted(event) {
         parsedWazeData = parseWazeData(contents)
 
         let firstTrip = parsedWazeData[0]
-        let firstTripDateFormattedForInput = `${firstTrip.dateTime.getUTCFullYear()}-${(firstTrip.dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${firstTrip.dateTime.getUTCDate().toString().padStart(2, '0')}`
+        let firstTripDateFormattedForInput = dateFormattedForInputElement(firstTrip.dateTime)
         let lastTrip = parsedWazeData[parsedWazeData.length - 1]
-        let lastTripDateFormattedForInput = `${lastTrip.dateTime.getUTCFullYear()}-${(lastTrip.dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${lastTrip.dateTime.getUTCDate().toString().padStart(2, '0')}`
+        let lastTripDateFormattedForInput = dateFormattedForInputElement(lastTrip.dateTime)
         document.getElementById('startDateInput').disabled = false
         document.getElementById('startDateInput').value = firstTripDateFormattedForInput
         document.getElementById('startDateInput').min = firstTripDateFormattedForInput
@@ -88,7 +88,7 @@ function wazeCSVFileSubmitted(event) {
             // Create a download link for the XML file
             const downloadXmlLink = document.getElementById('downloadXmlLink');
             downloadXmlLink.href = URL.createObjectURL(xmlBlob);
-            downloadXmlLink.download = file.name.replace('.csv', '.gpx');
+            downloadXmlLink.download = generateGPXFilename(filteredWazeData[0].dateTime, filteredWazeData[filteredWazeData.length - 1].dateTime)
             downloadXmlLink.textContent = downloadXmlLink.download;
 
             // Unhide GPX file link container
@@ -165,6 +165,10 @@ function parseWazeDateTimeString(wazeDateTimeString) {
         .replace(' UTC', 'Z'))
 }
 
+function dateFormattedForInputElement(dateTime) {
+    return `${dateTime.getUTCFullYear()}-${(dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${dateTime.getUTCDate().toString().padStart(2, '0')}`
+}
+
 function generateGPXString(parsedWazeData) {
     let xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
 
@@ -199,6 +203,10 @@ function generateGPXString(parsedWazeData) {
         + '</gpx>'
 
     return xmlHeader + gpxElement
+}
+
+function generateGPXFilename(firstEntryDateTime, lastEntryDateTime) {
+    return `waze_history_${dateFormattedForInputElement(firstEntryDateTime)}-${dateFormattedForInputElement(lastEntryDateTime)}.gpx`
 }
 
 function renderGPXOnLeaflet(gpxString) {
