@@ -4,6 +4,7 @@
         "ghcr.io/devcontainers-contrib/features/http-server:1": {}
     },
     "appPort": "8080:80",
+    "postAttachCommand": "http-server -c-1 /workspaces/waze2gpx",
     "customizations": {
         "vscode": {
             "extensions": [
