@@ -44,9 +44,9 @@ function wazeCSVFileSubmitted(event) {
         parsedWazeData = parseWazeData(contents)
 
         let firstTrip = parsedWazeData[0]
-        let firstTripDateFormattedForInput = dateFormattedForInputElement(firstTrip.dateTime)
+        let firstTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(firstTrip.dateTime)
         let lastTrip = parsedWazeData[parsedWazeData.length - 1]
-        let lastTripDateFormattedForInput = dateFormattedForInputElement(lastTrip.dateTime)
+        let lastTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(lastTrip.dateTime)
         document.getElementById('startDateInput').disabled = false
         document.getElementById('startDateInput').value = firstTripDateFormattedForInput
         document.getElementById('startDateInput').min = firstTripDateFormattedForInput
@@ -100,12 +100,12 @@ function wazeCSVFileSubmitted(event) {
     
     function updateSelectedTripCounter() {
         filteredWazeData = parsedWazeData.filter((trip) => {
-            let filterStartDateComponents = document.getElementById('startDateInput').value.split('-')
-            let filterStartDate = new Date(Date.UTC(filterStartDateComponents[0], filterStartDateComponents[1] - 1, filterStartDateComponents[2]))
-            let filterEndDateComponents = document.getElementById('endDateInput').value.split('-')
-            let filterEndDate = new Date(Date.UTC(filterEndDateComponents[0], filterEndDateComponents[1] - 1, filterEndDateComponents[2], 23, 59, 60))
+            let filterStartDate = moment.utc(document.getElementById('startDateInput').value)
+            let filterEndDate = moment.utc(document.getElementById('endDateInput').value).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
 
-            return ((trip.dateTime >= filterStartDate) && (trip.dateTime < filterEndDate))
+            // console.log(`filterStartDate: ${filterStartDate}, filterEndDate: ${filterEndDate}`)
+
+            return ((trip.dateTime >= filterStartDate) && (trip.dateTime <= filterEndDate))
         });
 
         document.getElementById('selectedTripCounter').innerText = filteredWazeData.length.toString()
@@ -165,8 +165,16 @@ function parseWazeDateTimeString(wazeDateTimeString) {
         .replace(' UTC', 'Z'))
 }
 
-function dateFormattedForInputElement(dateTime) {
+function dateFormattedForInputTypeDateElement(dateTime) {
     return `${dateTime.getUTCFullYear()}-${(dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${dateTime.getUTCDate().toString().padStart(2, '0')}`
+}
+
+function dateFormattedForInputTypeDateTimeLocalElement(dateTime) {
+    /* 
+        NB: this formatting function drops seconds 
+        and resulting string value is slightly in the past from passed Date parameter
+    */
+    return `${dateTime.getUTCFullYear()}-${(dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${dateTime.getUTCDate().toString().padStart(2, '0')}T${dateTime.getUTCHours().toString().padStart(2, '0')}:${dateTime.getUTCMinutes().toString().padStart(2, '0')}`
 }
 
 function generateGPXString(parsedWazeData) {
@@ -206,7 +214,7 @@ function generateGPXString(parsedWazeData) {
 }
 
 function generateGPXFilename(firstEntryDateTime, lastEntryDateTime) {
-    return `waze_history_${dateFormattedForInputElement(firstEntryDateTime)}-${dateFormattedForInputElement(lastEntryDateTime)}.gpx`
+    return `waze_history_${dateFormattedForInputTypeDateElement(firstEntryDateTime)}-${dateFormattedForInputTypeDateElement(lastEntryDateTime)}.gpx`
 }
 
 function renderGPXOnLeaflet(gpxString) {

@@ -9,6 +9,12 @@
         <link rel="stylesheet" href="layout.css">
 
         <!--
+            Moment.js
+            https://momentjs.com
+        -->
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+
+        <!--
             xml-formatter
             https://github.com/chrisbottin/xml-formatter
             https://www.jsdelivr.com/package/npm/xml-formatter
@@ -57,8 +63,12 @@
         <h2>Step 3: Trim data and adjust settings</h2>
         <p>
             <div>
-                Start date: <input type="date" id="startDateInput" name="start-date" disabled />
-                End date: <input type="date" id="endDateInput" name="end-date" disabled />
+                First trip start date: <input type="datetime-local" id="startDateInput" name="start-date" disabled />
+            </div>
+            <div>
+                Last trip start date: <input type="datetime-local" id="endDateInput" name="end-date" disabled />
+            </div>
+            <div>
                 Selected trips: <span id="selectedTripCounter"></span>
             </div>
             <div>
