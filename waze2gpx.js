@@ -20,6 +20,7 @@ function wazeCSVFileSubmitted(event) {
     const file = fileInput.files[0];
     var parsedWazeData = null
     var filteredWazeData = null
+    var unformattedXMLString = null
 
     if ( ! file) {
         const errorMessage = 'No file selected!'
@@ -51,20 +52,18 @@ function wazeCSVFileSubmitted(event) {
         document.getElementById('startDateInput').value = firstTripDateFormattedForInput
         document.getElementById('startDateInput').min = firstTripDateFormattedForInput
         document.getElementById('startDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('startDateInput').onchange = function() { updateSelectedTripCounter() }
+        document.getElementById('startDateInput').onchange = function() { updatePreview() }
         document.getElementById('endDateInput').disabled = false
         document.getElementById('endDateInput').value = lastTripDateFormattedForInput
         document.getElementById('endDateInput').min = firstTripDateFormattedForInput
         document.getElementById('endDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('endDateInput').onchange = function() { updateSelectedTripCounter() }
+        document.getElementById('endDateInput').onchange = function() { updatePreview() }
 
-        updateSelectedTripCounter()
+        updatePreview()
 
         document.getElementById('generateXmlButton').disabled = false
         document.getElementById('generateXmlButton').addEventListener("click", function() {
-            // Convert the parsed data to XML format
-            var xmlContent = generateGPXString(filteredWazeData)
-            renderGPXOnLeaflet(xmlContent)
+            var xmlContent = unformattedXMLString
             if (document.getElementById('xmlFormatter').checked) {
                 xmlContent = xmlFormatter(xmlContent) // very slow, therefore disabled by default
                 
@@ -97,8 +96,14 @@ function wazeCSVFileSubmitted(event) {
     };
 
     reader.readAsText(file);
-    
-    function updateSelectedTripCounter() {
+
+    function updatePreview() {
+        updateFilteredWazeData()
+        updateSelectedTripCounter()
+        updateMapPreview()
+    }
+
+    function updateFilteredWazeData() {
         filteredWazeData = parsedWazeData.filter((trip) => {
             let filterStartDate = moment.utc(document.getElementById('startDateInput').value)
             let filterEndDate = moment.utc(document.getElementById('endDateInput').value).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
@@ -107,8 +112,15 @@ function wazeCSVFileSubmitted(event) {
 
             return ((trip.dateTime >= filterStartDate) && (trip.dateTime <= filterEndDate))
         });
+    }
 
+    function updateSelectedTripCounter() {
         document.getElementById('selectedTripCounter').innerText = filteredWazeData.length.toString()
+    }
+
+    function updateMapPreview() {
+        unformattedXMLString = generateGPXString(filteredWazeData)
+        renderGPXOnLeaflet(unformattedXMLString)
     }
 }
 
