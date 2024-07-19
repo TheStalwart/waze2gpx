@@ -64,21 +64,25 @@ function wazeCSVFileSubmitted(event) {
         document.getElementById('generateXmlButton').disabled = false
         document.getElementById('generateXmlButton').addEventListener("click", function() {
             var xmlContent = unformattedXMLString
+
+            var filePreviewContainerElement = document.getElementById('filePreviewContainer')
+            var filePreviewElement = document.getElementById('filePreview')
             if (document.getElementById('xmlFormatter').checked) {
                 xmlContent = xmlFormatter(xmlContent) // very slow, therefore disabled by default
                 
                 // console.log('XML content:', xmlContent);
 
                 // Preview generated XML file.
-                // Do not preview if it's a one-liner compact XML
-                var filePreviewElement = document.getElementById('filePreview')
+                // Do not preview if it's a one-liner compact XML                
                 filePreviewElement.textContent = xmlContent
-
-                var filePreviewContainerElement = document.getElementById('filePreviewContainer')
                 filePreviewContainerElement.style.display = 'block'
 
                 // Only highlight syntax if output is formatted
-                hljs.highlightAll(); // very slow, therefore disabled by default
+                filePreviewElement.removeAttribute('data-highlighted'); // https://github.com/highlightjs/highlight.js/commit/3987abe437dbf962d64a51da6282d9c9bc20fc13#commitcomment-130941045
+                hljs.highlightElement(filePreviewElement) // very slow, therefore disabled by default
+            } else {
+                filePreviewElement.textContent = ''
+                filePreviewContainerElement.style.display = 'none'
             }
 
             // Create a blob from the XML content
