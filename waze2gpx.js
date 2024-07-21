@@ -6,6 +6,10 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 var geoJSONLayer = null
 
+var parsedWazeData = null
+var filteredWazeData = null
+var unformattedXMLString = null
+
 // https://github.com/placemark/togeojson
 import { gpx } from "https://unpkg.com/@tmcw/togeojson?module";
 
@@ -18,9 +22,6 @@ function wazeCSVFileSubmitted(event) {
 
     const fileInput = document.getElementById('fileUpload');
     const file = fileInput.files[0];
-    var parsedWazeData = null
-    var filteredWazeData = null
-    var unformattedXMLString = null
 
     if ( ! file) {
         const errorMessage = 'No file selected!'
@@ -128,11 +129,11 @@ function wazeCSVFileSubmitted(event) {
             // Create a download link for the XML file
             const downloadXmlLink = document.getElementById('downloadXmlLink');
             downloadXmlLink.href = URL.createObjectURL(xmlBlob);
-            downloadXmlLink.download = generateGPXFilename(filteredWazeData[0].dateTime, filteredWazeData[filteredWazeData.length - 1].dateTime)
+            downloadXmlLink.download = generateFileName('gpx')
             downloadXmlLink.textContent = downloadXmlLink.download;
 
             // Unhide GPX file link container
-            document.getElementById('gpxFileLinkContainer').style.display = 'inline';
+            document.getElementById('gpxFileLinkContainer').style.display = 'block';
         }, false);
     };
 
@@ -266,8 +267,10 @@ function generateGPXString(parsedWazeData) {
     return xmlHeader + gpxElement
 }
 
-function generateGPXFilename(firstEntryDateTime, lastEntryDateTime) {
-    return `waze_history_${dateFormattedForInputTypeDateElement(firstEntryDateTime)}-${dateFormattedForInputTypeDateElement(lastEntryDateTime)}.gpx`
+function generateFileName(extension) {
+    let firstEntryDateTime = filteredWazeData[0].dateTime;
+    let lastEntryDateTime = filteredWazeData[filteredWazeData.length - 1].dateTime;
+    return `waze_history_${dateFormattedForInputTypeDateElement(firstEntryDateTime)}-${dateFormattedForInputTypeDateElement(lastEntryDateTime)}.${extension}`
 }
 
 function renderGPXOnLeaflet(gpxString) {
@@ -279,9 +282,24 @@ function renderGPXOnLeaflet(gpxString) {
 
     var geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
     // console.log(geoJSONData)
+    generateGeoJSONDownloadLink(geoJSONData)
 
     geoJSONLayer = L.geoJSON(geoJSONData)
     geoJSONLayer.addTo(map)
 
     map.fitBounds(geoJSONLayer.getBounds())
+}
+
+function generateGeoJSONDownloadLink(geoJSONData) {
+    const blob = new Blob([JSON.stringify(geoJSONData, null, 2)], {
+        type: 'application/json',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.getElementById('downloadGeoJSONLink');
+    a.href = url;
+    a.download = generateFileName('geojson')
+    a.textContent = a.download;
+
+    // Unhide file link container
+    document.getElementById('geoJSONFileLinkContainer').style.display = 'block';
 }

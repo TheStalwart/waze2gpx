@@ -18,6 +18,10 @@ body {
     display: none;
 }
 
+#geoJSONFileLinkContainer {
+    display: none;
+}
+
 #filePreviewContainer {
     display: none;
 }
