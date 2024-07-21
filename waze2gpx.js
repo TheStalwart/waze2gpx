@@ -57,7 +57,44 @@ function wazeCSVFileSubmitted(event) {
         document.getElementById('endDateInput').value = lastTripDateFormattedForInput
         document.getElementById('endDateInput').min = firstTripDateFormattedForInput
         document.getElementById('endDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('endDateInput').onchange = function() { updatePreview() }
+        document.getElementById('endDateInput').onchange = function() { updatePreview() };
+        
+        ['start', 'end'].forEach((inputGroup) => {
+            ['Prev', 'Next'].forEach((direction) => {
+                let fullButtonID = `${inputGroup}${direction}TripButton`
+                let buttonElement = document.getElementById(fullButtonID)
+
+                buttonElement.disabled = false
+                buttonElement.onclick = function() {
+                    let inputElement = document.getElementById(`${inputGroup}DateInput`)
+                    let currentInputValue = inputElement.value
+                    var foundTrip = null
+
+                    // console.log(`${buttonElement.id} clicked, looking for a value ${direction} to ${currentInputValue}`)
+
+                    if (direction == 'Next') {
+                        foundTrip = parsedWazeData.find((trip) => {
+                            let roundedCurrentInputValue = moment.utc(currentInputValue).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
+                            return moment(trip.dateTime).isAfter(roundedCurrentInputValue)
+                        })
+                    } else { // 'Prev'
+                        foundTrip = parsedWazeData.findLast((trip) => {
+                            let roundedCurrentInputValue = moment.utc(currentInputValue)
+                            return moment(trip.dateTime).isBefore(roundedCurrentInputValue)
+                        })
+                    }
+                    
+
+                    if (foundTrip) {
+                        inputElement.value = dateFormattedForInputTypeDateTimeLocalElement(foundTrip.dateTime)
+                        updatePreview()
+                        // console.log(`found trip: ${foundTrip.dateTime}`)
+                    } else {
+                        // console.log(`${direction} trip not found`)
+                    }
+                };
+            });
+        });
 
         updatePreview()
 

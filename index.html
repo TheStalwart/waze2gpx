@@ -63,10 +63,16 @@
         <h2>Step 3: Trim data and adjust settings</h2>
         <p>
             <div>
-                First trip start date: <input type="datetime-local" id="startDateInput" name="start-date" disabled />
+                First trip start date: 
+                <button id="startPrevTripButton" title="Previous trip" disabled>&lt;&lt;</button>
+                <input type="datetime-local" id="startDateInput" name="start-date" disabled />
+                <button id="startNextTripButton" title="Next trip" disabled>&gt;&gt;</button>
             </div>
             <div>
-                Last trip start date: <input type="datetime-local" id="endDateInput" name="end-date" disabled />
+                Last trip start date: 
+                <button id="endPrevTripButton" title="Previous trip" disabled>&lt;&lt;</button>
+                <input type="datetime-local" id="endDateInput" name="end-date" disabled />
+                <button id="endNextTripButton" title="Next trip" disabled>&gt;&gt;</button>
             </div>
             <div>
                 Selected trips: <span id="selectedTripCounter"></span>
