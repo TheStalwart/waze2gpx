@@ -291,7 +291,7 @@ function renderGPXOnLeaflet(gpxString) {
 }
 
 function generateGeoJSONDownloadLink(geoJSONData) {
-    const blob = new Blob([JSON.stringify(geoJSONData, null, 2)], {
+    const blob = new Blob([JSON.stringify(geoJSONData)], {
         type: 'application/json',
     });
     const url = URL.createObjectURL(blob);
