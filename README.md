@@ -1,7 +1,7 @@
 # waze2gpx: Waze trip history to GPX converter
 
 Extract trip history from [Waze](https://www.waze.com/) 
-and convert to open [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format) format.
+and convert to open [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format), [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) and [KML](https://en.wikipedia.org/wiki/Keyhole_Markup_Language) formats.
 
 Production instance: [https://thestalwart.github.io/waze2gpx/](https://thestalwart.github.io/waze2gpx/)
 
