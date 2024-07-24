@@ -24,6 +24,12 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
+
+        <!--
+            tokml
+            https://github.com/mapbox/tokml
+        -->
+        <script src="https://cdn.jsdelivr.net/npm/tokml@0.4.0/tokml.min.js"></script>
     </head>
 
     <body>
@@ -77,6 +83,10 @@
                 <div id="geoJSONFileLinkContainer">
                     GeoJSON file: <a id="downloadGeoJSONLink" href="#" class="disabled">account_activity_3.geojson</a>
                     <span id="geoJSONFileSizeSpan">(0 MB)</span>
+                </div>
+                <div id="kmlFileLinkContainer">
+                    KML file: <a id="downloadKMLLink" href="#" class="disabled">account_activity_3.kml</a>
+                    <span id="kmlFileSizeSpan">(0 MB)</span>
                 </div>
             </div>
         </p>

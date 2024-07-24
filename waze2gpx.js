@@ -247,6 +247,7 @@ function renderGPXOnLeaflet(gpxString) {
     var geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
     // console.log(geoJSONData)
     generateGeoJSONDownloadLink(geoJSONData)
+    generateKMLDownloadLink(geoJSONData)
 
     geoJSONLayer = L.geoJSON(geoJSONData)
     geoJSONLayer.addTo(map)
@@ -281,5 +282,20 @@ function generateGeoJSONDownloadLink(geoJSONData) {
     a.className = null
 
     document.getElementById('geoJSONFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
+        .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
+}
+
+function generateKMLDownloadLink(geoJSONData) {
+    const blob = new Blob([tokml(geoJSONData)], {
+        type: 'application/xml',
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.getElementById('downloadKMLLink');
+    a.href = url;
+    a.download = generateFileName('kml')
+    a.textContent = a.download;
+    a.className = null
+
+    document.getElementById('kmlFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
 }
