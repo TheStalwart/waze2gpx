@@ -10,3 +10,7 @@ Production instance: [https://thestalwart.github.io/waze2gpx/](https://thestalwa
 - [Alternative implementation in PowerShell](https://www.waze.com/forum/viewtopic.php?t=261936)
 - Instructions for [Tracs - a command line application for managing GPS tracks](https://tracs.readthedocs.io/en/latest/waze/)
 - [GPX Format Documentation](https://www.topografix.com/gpx.asp)
+
+## Development environment
+To run a local web server at http://127.0.0.1:3000:
+`docker-compose up`
