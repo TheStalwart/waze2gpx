@@ -3,7 +3,7 @@
 Extract trip history from [Waze](https://www.waze.com/) 
 and convert to open [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format), [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) and [KML](https://en.wikipedia.org/wiki/Keyhole_Markup_Language) formats.
 
-Production instance: [https://thestalwart.github.io/waze2gpx/](https://thestalwart.github.io/waze2gpx/)
+You can try it here: [https://thestalwart.github.io/waze2gpx/](https://thestalwart.github.io/waze2gpx/)
 
 ## More info
 - [Waze Help: Download your personal data](https://support.google.com/waze/answer/9002354)
