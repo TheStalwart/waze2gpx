@@ -98,43 +98,6 @@ function wazeCSVFileSubmitted(event) {
         });
 
         updatePreview()
-
-        document.getElementById('generateXmlButton').disabled = false
-        document.getElementById('generateXmlButton').addEventListener("click", function() {
-            var xmlContent = unformattedXMLString
-
-            var filePreviewContainerElement = document.getElementById('filePreviewContainer')
-            var filePreviewElement = document.getElementById('filePreview')
-            if (document.getElementById('xmlFormatter').checked) {
-                xmlContent = xmlFormatter(xmlContent) // very slow, therefore disabled by default
-                
-                // console.log('XML content:', xmlContent);
-
-                // Preview generated XML file.
-                // Do not preview if it's a one-liner compact XML                
-                filePreviewElement.textContent = xmlContent
-                filePreviewContainerElement.style.display = 'block'
-
-                // Only highlight syntax if output is formatted
-                filePreviewElement.removeAttribute('data-highlighted'); // https://github.com/highlightjs/highlight.js/commit/3987abe437dbf962d64a51da6282d9c9bc20fc13#commitcomment-130941045
-                hljs.highlightElement(filePreviewElement) // very slow, therefore disabled by default
-            } else {
-                filePreviewElement.textContent = ''
-                filePreviewContainerElement.style.display = 'none'
-            }
-
-            // Create a blob from the XML content
-            const xmlBlob = new Blob([xmlContent], { type: 'application/xml' });
-
-            // Create a download link for the XML file
-            const downloadXmlLink = document.getElementById('downloadXmlLink');
-            downloadXmlLink.href = URL.createObjectURL(xmlBlob);
-            downloadXmlLink.download = generateFileName('gpx')
-            downloadXmlLink.textContent = downloadXmlLink.download;
-
-            // Unhide GPX file link container
-            document.getElementById('gpxFileLinkContainer').style.display = 'block';
-        }, false);
     };
 
     reader.readAsText(file);
@@ -143,6 +106,7 @@ function wazeCSVFileSubmitted(event) {
         updateFilteredWazeData()
         updateSelectedTripCounter()
         updateMapPreview()
+        generateGPXDownloadLink()
     }
 
     function updateFilteredWazeData() {
@@ -290,6 +254,18 @@ function renderGPXOnLeaflet(gpxString) {
     map.fitBounds(geoJSONLayer.getBounds())
 }
 
+function generateGPXDownloadLink() {
+    // Create a blob from the XML content
+    const xmlBlob = new Blob([unformattedXMLString], { type: 'application/xml' });
+
+    // Create a download link for the XML file
+    const downloadXmlLink = document.getElementById('downloadXmlLink');
+    downloadXmlLink.href = URL.createObjectURL(xmlBlob);
+    downloadXmlLink.download = generateFileName('gpx')
+    downloadXmlLink.textContent = downloadXmlLink.download;
+    downloadXmlLink.className = null
+}
+
 function generateGeoJSONDownloadLink(geoJSONData) {
     const blob = new Blob([JSON.stringify(geoJSONData)], {
         type: 'application/json',
@@ -299,7 +275,5 @@ function generateGeoJSONDownloadLink(geoJSONData) {
     a.href = url;
     a.download = generateFileName('geojson')
     a.textContent = a.download;
-
-    // Unhide file link container
-    document.getElementById('geoJSONFileLinkContainer').style.display = 'block';
+    a.className = null
 }

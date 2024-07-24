@@ -21,15 +21,7 @@
 #parsedTripCounterContainer {
     display: none;
 }
-
-#gpxFileLinkContainer {
-    display: none;
-}
-
-#geoJSONFileLinkContainer {
-    display: none;
-}
-
-#filePreviewContainer {
-    display: none;
+a.disabled {
+    pointer-events: none;
+    color: #ccc;
 }

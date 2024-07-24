@@ -15,20 +15,6 @@
         <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
 
         <!--
-            xml-formatter
-            https://github.com/chrisbottin/xml-formatter
-            https://www.jsdelivr.com/package/npm/xml-formatter
-        -->
-        <script src="https://cdn.jsdelivr.net/npm/xml-formatter@3.6.3/dist/browser/xml-formatter-singleton.min.js"></script>
-
-        <!-- 
-            highlight.js
-            https://highlightjs.org
-        -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-
-        <!--
             Leaflet
             https://leafletjs.com/examples/quick-start/
         -->
@@ -77,10 +63,6 @@
             <div>
                 Selected trips: <span id="selectedTripCounter"></span>
             </div>
-            <div>
-                <input type="checkbox" id="xmlFormatter" name="xmlFormatter" />
-                <label for="xmlFormatter">Format XML (much slower conversion and 60% larger output file size)</label>
-            </div>
 
             <div id="map"></div>
         </p>
@@ -88,19 +70,14 @@
         <h2>Step 4: Download trip data in GPX format</h2>
         <p>
             <div>
-                <button id="generateXmlButton" disabled>Generate GPX file</button>
                 <div id="gpxFileLinkContainer">
-                    GPX file: <a id="downloadXmlLink">account_activity_3.gpx</a>
+                    GPX file: <a id="downloadXmlLink" href="#" class="disabled">account_activity_3.gpx</a>
                 </div>
                 <div id="geoJSONFileLinkContainer">
-                    GeoJSON file: <a id="downloadGeoJSONLink">account_activity_3.geojson</a>
+                    GeoJSON file: <a id="downloadGeoJSONLink" href="#" class="disabled">account_activity_3.geojson</a>
                 </div>
             </div>
         </p>
-        <pre id="filePreviewContainer">
-            <code id="filePreview">
-            </code>
-        </pre>
 
         <hr>
 
