@@ -264,6 +264,9 @@ function generateGPXDownloadLink() {
     downloadXmlLink.download = generateFileName('gpx')
     downloadXmlLink.textContent = downloadXmlLink.download;
     downloadXmlLink.className = null
+
+    document.getElementById('gpxFileSizeSpan').textContent = `(${(xmlBlob.size / 1024 / 1024)
+        .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
 }
 
 function generateGeoJSONDownloadLink(geoJSONData) {
@@ -276,4 +279,7 @@ function generateGeoJSONDownloadLink(geoJSONData) {
     a.download = generateFileName('geojson')
     a.textContent = a.download;
     a.className = null
+
+    document.getElementById('geoJSONFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
+        .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
 }
