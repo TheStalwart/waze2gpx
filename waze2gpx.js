@@ -197,6 +197,10 @@ function dateFormattedForInputTypeDateTimeLocalElement(dateTime) {
 }
 
 function generateGPXString(parsedWazeData) {
+    if (parsedWazeData.length == 0) {
+        return ''
+    }
+
     let xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
 
     let fileGenerationDateTime = new Date()
