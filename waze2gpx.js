@@ -288,10 +288,10 @@ function generateDownloadLink(stringData, mimeType, extension) {
         a.className = 'disabledFileDownloadLink';
     }
 
-    document.getElementById(`${extension}FileSizeSpan`).textContent = `(${(blob.size / 1024 / 1024)
+    document.getElementById(`${extension}FileSizeSpan`).textContent = `(${(blob.size / 1024)
         .toLocaleString(undefined, {
             style: 'unit', 
-            unit: 'megabyte', 
-            maximumFractionDigits: 3
+            unit: 'kilobyte', 
+            maximumFractionDigits: 0
         })})`
 }
