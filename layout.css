@@ -21,7 +21,8 @@
 #parsedTripCounterContainer {
     display: none;
 }
-a.disabled {
+
+a.disabledFileDownloadLink {
     pointer-events: none;
     color: #ccc;
 }

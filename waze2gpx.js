@@ -264,17 +264,19 @@ function renderGPXOnLeaflet(gpxString) {
 }
 
 function generateGPXDownloadLink() {
-    // Create a blob from the XML content
-    const xmlBlob = new Blob([unformattedXMLString], { type: 'application/xml' });
+    const blob = new Blob([unformattedXMLString], { 
+        type: 'application/xml' 
+    });
+    // console.log(`GPX blob size: ${blob.size}`);
 
     // Create a download link for the XML file
     const downloadXmlLink = document.getElementById('downloadXmlLink');
-    downloadXmlLink.href = URL.createObjectURL(xmlBlob);
+    downloadXmlLink.href = URL.createObjectURL(blob);
     downloadXmlLink.download = generateFileName('gpx')
     downloadXmlLink.textContent = downloadXmlLink.download;
-    downloadXmlLink.className = null
+    downloadXmlLink.className = 'enabledFileDownloadLink'
 
-    document.getElementById('gpxFileSizeSpan').textContent = `(${(xmlBlob.size / 1024 / 1024)
+    document.getElementById('gpxFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
 }
 
@@ -282,12 +284,14 @@ function generateGeoJSONDownloadLink(geoJSONData) {
     const blob = new Blob([JSON.stringify(geoJSONData)], {
         type: 'application/json',
     });
+    // console.log(`GeoJSON blob size: ${blob.size}`);
+
     const url = URL.createObjectURL(blob);
     const a = document.getElementById('downloadGeoJSONLink');
     a.href = url;
     a.download = generateFileName('geojson')
     a.textContent = a.download;
-    a.className = null
+    a.className = 'enabledFileDownloadLink'
 
     document.getElementById('geoJSONFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
@@ -297,12 +301,14 @@ function generateKMLDownloadLink(geoJSONData) {
     const blob = new Blob([tokml(geoJSONData)], {
         type: 'application/xml',
     });
+    // console.log(`KML blob size: ${blob.size}`);
+
     const url = URL.createObjectURL(blob);
     const a = document.getElementById('downloadKMLLink');
     a.href = url;
     a.download = generateFileName('kml')
     a.textContent = a.download;
-    a.className = null
+    a.className = 'enabledFileDownloadLink'
 
     document.getElementById('kmlFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
