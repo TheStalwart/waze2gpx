@@ -96,6 +96,9 @@ function wazeCSVFileSubmitted(event) {
 
         document.querySelectorAll('fieldset').forEach((fieldsetElement) => {
             fieldsetElement.disabled = false;
+            fieldsetElement.onchange = function() {
+                updatePreview()
+            }
         });
 
         updatePreview()
@@ -201,39 +204,67 @@ function generateGPXString(parsedWazeData) {
         return ''
     }
 
+    let mergeTripsPreference = document.querySelector('input[name=mergeTrips]:checked').value
+
     let xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>'
 
     let fileGenerationDateTime = new Date()
     let timeElement = '<time>' + fileGenerationDateTime.toISOString() + '</time>'
     let metadataElement = '<metadata>' + timeElement + '</metadata>'
 
-    let trkNameElement = '<name>Waze History</name>'
-    let trkSegElements = parsedWazeData.map((segment) => {
-        let trkptElements = segment.trekPoints.map((point) => {
-            var timeValue = null
-            if (point.dateTime) {
-                timeValue = point.dateTime
-            } else if (segment.trekPoints.indexOf(point) == 0) {
-                timeValue = segment.dateTime
-            }
+    var trkElements = []
 
-            var timeElement = ''
-            if (timeValue) {
-                timeElement = '<time>' + segment.dateTime.toISOString() + '</time>'
-            }
-            return `<trkpt lat="${point.lat}" lon="${point.lng}">${timeElement}</trkpt>`
+    if (mergeTripsPreference == 'trkseg') {
+        /* 
+            Generate a single track 
+            with individual waze trips interpreted as track segments
+        */
+        let firstEntryDateTime = parsedWazeData[0].dateTime;
+        let lastEntryDateTime = parsedWazeData[parsedWazeData.length - 1].dateTime;
+        let trkNameElement = `<name>Waze History ${dateFormattedForInputTypeDateElement(firstEntryDateTime)} - ${dateFormattedForInputTypeDateElement(lastEntryDateTime)}</name>`
+        // console.log(trkNameElement)
+
+        let trkSegElements = parsedWazeData.map((wazeTrip) => {
+            return generateTrkSegString(wazeTrip)
         })
-        
-        return '<trkseg>' + trkptElements.join('') + '</trkseg>'
-    })
-    let trkElement = '<trk>' + trkNameElement + trkSegElements.join('') + '</trk>'
+        trkElements.push('<trk>' + trkNameElement + trkSegElements.join('') + '</trk>')
+    } else { // mergeTripsPreference == 'trk'
+        /*
+            Generate a separate track for every waze trip
+        */
+        trkElements = trkElements.concat(parsedWazeData.map((wazeTrip) => {
+            let trkNameElement = `<name>Waze Trip ${wazeTrip.dateTime.getUTCFullYear()}-${(wazeTrip.dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${wazeTrip.dateTime.getUTCDate().toString().padStart(2, '0')} ${wazeTrip.dateTime.getUTCHours().toString().padStart(2, '0')}:${wazeTrip.dateTime.getUTCMinutes().toString().padStart(2, '0')}:${wazeTrip.dateTime.getUTCSeconds().toString().padStart(2, '0')}</name>`
+            // console.log(trkNameElement)
+
+            return `<trk>${trkNameElement}${generateTrkSegString(wazeTrip)}</trk>`
+        }));
+    }
 
     let gpxElement = '<gpx creator="waze2gpx - https://github.com/TheStalwart/waze2gpx" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">'
         + metadataElement
-        + trkElement
+        + trkElements.join('')
         + '</gpx>'
 
     return xmlHeader + gpxElement
+}
+
+function generateTrkSegString(wazeTrip) {
+    let trkptElements = wazeTrip.trekPoints.map((point) => {
+        var timeValue = null
+        if (point.dateTime) {
+            timeValue = point.dateTime
+        } else if (wazeTrip.trekPoints.indexOf(point) == 0) {
+            timeValue = wazeTrip.dateTime
+        }
+
+        var timeElement = ''
+        if (timeValue) {
+            timeElement = '<time>' + wazeTrip.dateTime.toISOString() + '</time>'
+        }
+        return `<trkpt lat="${point.lat}" lon="${point.lng}">${timeElement}</trkpt>`
+    });
+
+    return `<trkseg>${trkptElements.join('')}</trkseg>`
 }
 
 function generateFileName(extension) {
