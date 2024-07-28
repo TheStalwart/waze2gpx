@@ -33,6 +33,14 @@ a.disabledFileDownloadLink {
     color: #ccc;
 }
 
+.disabledFileDownloadLink, .enabledFileDownloadLink {
+    display: inline-block;
+}
+
+.fileSizeSpan {
+    display: inline-block;
+}
+
 fieldset {
     display: inline-block;
     vertical-align:top;
