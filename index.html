@@ -51,23 +51,29 @@
             Uploaded trips: <span id="parsedTripCounter"></span>
         </div>
 
-        <h2>Step 3: Trim data and adjust settings</h2>
+        <h2>Step 3: Adjust settings</h2>
         <p>
-            <div>
-                First trip start date: 
-                <button id="startPrevTripButton" title="Previous trip" disabled>&lt;&lt;</button>
-                <input type="datetime-local" id="startDateInput" name="start-date" disabled />
-                <button id="startNextTripButton" title="Next trip" disabled>&gt;&gt;</button>
-            </div>
-            <div>
-                Last trip start date: 
-                <button id="endPrevTripButton" title="Previous trip" disabled>&lt;&lt;</button>
-                <input type="datetime-local" id="endDateInput" name="end-date" disabled />
-                <button id="endNextTripButton" title="Next trip" disabled>&gt;&gt;</button>
-            </div>
-            <div>
-                Selected trips: <span id="selectedTripCounter"></span>
-            </div>
+            <fieldset disabled>
+                <legend>Trim trip history</legend>
+
+                <div>
+                    First trip start date: 
+                    <button id="startPrevTripButton" title="Previous trip">&lt;&lt;</button>
+                    <input type="datetime-local" id="startDateInput" name="start-date" />
+                    <button id="startNextTripButton" title="Next trip">&gt;&gt;</button>
+                </div>
+
+                <div>
+                    Last trip start date: 
+                    <button id="endPrevTripButton" title="Previous trip">&lt;&lt;</button>
+                    <input type="datetime-local" id="endDateInput" name="end-date" />
+                    <button id="endNextTripButton" title="Next trip">&gt;&gt;</button>
+                </div>
+                
+                <div>
+                    Selected trips: <span id="selectedTripCounter"></span>
+                </div>
+            </fieldset>
 
             <div id="map"></div>
         </p>

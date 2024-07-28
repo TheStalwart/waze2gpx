@@ -25,3 +25,8 @@ a.disabled {
     pointer-events: none;
     color: #ccc;
 }
+
+fieldset {
+    display: inline-block;
+    vertical-align:top;
+}

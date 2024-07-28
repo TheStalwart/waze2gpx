@@ -49,12 +49,10 @@ function wazeCSVFileSubmitted(event) {
         let firstTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(firstTrip.dateTime)
         let lastTrip = parsedWazeData[parsedWazeData.length - 1]
         let lastTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(lastTrip.dateTime)
-        document.getElementById('startDateInput').disabled = false
         document.getElementById('startDateInput').value = firstTripDateFormattedForInput
         document.getElementById('startDateInput').min = firstTripDateFormattedForInput
         document.getElementById('startDateInput').max = lastTripDateFormattedForInput
         document.getElementById('startDateInput').onchange = function() { updatePreview() }
-        document.getElementById('endDateInput').disabled = false
         document.getElementById('endDateInput').value = lastTripDateFormattedForInput
         document.getElementById('endDateInput').min = firstTripDateFormattedForInput
         document.getElementById('endDateInput').max = lastTripDateFormattedForInput
@@ -65,7 +63,6 @@ function wazeCSVFileSubmitted(event) {
                 let fullButtonID = `${inputGroup}${direction}TripButton`
                 let buttonElement = document.getElementById(fullButtonID)
 
-                buttonElement.disabled = false
                 buttonElement.onclick = function() {
                     let inputElement = document.getElementById(`${inputGroup}DateInput`)
                     let currentInputValue = inputElement.value
@@ -95,6 +92,10 @@ function wazeCSVFileSubmitted(event) {
                     }
                 };
             });
+        });
+
+        document.querySelectorAll('fieldset').forEach((fieldsetElement) => {
+            fieldsetElement.disabled = false;
         });
 
         updatePreview()
