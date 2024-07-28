@@ -253,7 +253,10 @@ function renderGPXOnLeaflet(gpxString) {
     geoJSONLayer = L.geoJSON(geoJSONData)
     geoJSONLayer.addTo(map)
 
-    map.fitBounds(geoJSONLayer.getBounds())
+    let bounds = geoJSONLayer.getBounds()
+    if (bounds.isValid()) {
+        map.fitBounds(bounds)
+    }
 }
 
 function generateGPXDownloadLink() {
