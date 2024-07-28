@@ -235,7 +235,7 @@ function generateGPXString(parsedWazeData) {
 function generateFileName(extension) {
     let firstEntryDateTime = filteredWazeData[0].dateTime;
     let lastEntryDateTime = filteredWazeData[filteredWazeData.length - 1].dateTime;
-    return `waze_history_${dateFormattedForInputTypeDateElement(firstEntryDateTime)}-${dateFormattedForInputTypeDateElement(lastEntryDateTime)}.${extension}`
+    return `waze_history_${dateFormattedForInputTypeDateElement(firstEntryDateTime)}_${dateFormattedForInputTypeDateElement(lastEntryDateTime)}.${extension}`
 }
 
 function renderGPXOnLeaflet(gpxString) {
