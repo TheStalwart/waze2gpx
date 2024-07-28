@@ -24,6 +24,10 @@
     display: none;
 }
 
+.dateInput {
+    display: inline-block;
+}
+
 a.disabledFileDownloadLink {
     pointer-events: none;
     color: #ccc;
