@@ -269,12 +269,15 @@ function generateGPXDownloadLink() {
     });
     // console.log(`GPX blob size: ${blob.size}`);
 
-    // Create a download link for the XML file
-    const downloadXmlLink = document.getElementById('downloadXmlLink');
-    downloadXmlLink.href = URL.createObjectURL(blob);
-    downloadXmlLink.download = generateFileName('gpx')
-    downloadXmlLink.textContent = downloadXmlLink.download;
-    downloadXmlLink.className = 'enabledFileDownloadLink'
+    const a = document.getElementById('downloadXmlLink');
+    a.href = URL.createObjectURL(blob);
+    a.download = generateFileName('gpx')
+    a.textContent = downloadXmlLink.download;
+    if (blob.size > 0) {
+        a.className = 'enabledFileDownloadLink'
+    } else {
+        a.className = 'disabledFileDownloadLink';
+    }
 
     document.getElementById('gpxFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
@@ -291,7 +294,11 @@ function generateGeoJSONDownloadLink(geoJSONData) {
     a.href = url;
     a.download = generateFileName('geojson')
     a.textContent = a.download;
-    a.className = 'enabledFileDownloadLink'
+    if (blob.size > 0) {
+        a.className = 'enabledFileDownloadLink'
+    } else {
+        a.className = 'disabledFileDownloadLink';
+    }
 
     document.getElementById('geoJSONFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
@@ -308,7 +315,11 @@ function generateKMLDownloadLink(geoJSONData) {
     a.href = url;
     a.download = generateFileName('kml')
     a.textContent = a.download;
-    a.className = 'enabledFileDownloadLink'
+    if (blob.size > 0) {
+        a.className = 'enabledFileDownloadLink'
+    } else {
+        a.className = 'disabledFileDownloadLink';
+    }
 
     document.getElementById('kmlFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
         .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
