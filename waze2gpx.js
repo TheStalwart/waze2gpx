@@ -107,7 +107,7 @@ function wazeCSVFileSubmitted(event) {
         updateFilteredWazeData()
         updateSelectedTripCounter()
         updateMapPreview()
-        generateGPXDownloadLink()
+        generateDownloadLink(unformattedXMLString, 'application/xml', 'gpx')
     }
 
     function updateFilteredWazeData() {
@@ -253,50 +253,34 @@ function renderGPXOnLeaflet(gpxString) {
         geoJSONLayer.remove()
     }
 
-    var geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
-    // console.log(geoJSONData)
-    generateGeoJSONDownloadLink(geoJSONData)
-    generateKMLDownloadLink(geoJSONData)
+    if (gpxString != '') {
+        var geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
+        // console.log(geoJSONData)
 
-    geoJSONLayer = L.geoJSON(geoJSONData)
-    geoJSONLayer.addTo(map)
+        generateDownloadLink(JSON.stringify(geoJSONData), 'application/json', 'geojson')
+        generateDownloadLink(tokml(geoJSONData), 'application/xml', 'kml')
 
-    let bounds = geoJSONLayer.getBounds()
-    if (bounds.isValid()) {
-        map.fitBounds(bounds)
+        geoJSONLayer = L.geoJSON(geoJSONData)
+        geoJSONLayer.addTo(map)
+
+        let bounds = geoJSONLayer.getBounds()
+        if (bounds.isValid()) {
+            map.fitBounds(bounds)
+        }
+    } else {
+        generateDownloadLink('', 'application/json', 'geojson')
+        generateDownloadLink('', 'application/xml', 'kml')
     }
 }
 
-function generateGPXDownloadLink() {
-    const blob = new Blob([unformattedXMLString], { 
-        type: 'application/xml' 
-    });
+function generateDownloadLink(stringData, mimeType, extension) {
+    const blob = new Blob([stringData], { type: mimeType });
     // console.log(`GPX blob size: ${blob.size}`);
 
-    const a = document.getElementById('downloadXmlLink');
-    a.href = URL.createObjectURL(blob);
-    a.download = generateFileName('gpx')
-    a.textContent = downloadXmlLink.download;
-    if (blob.size > 0) {
-        a.className = 'enabledFileDownloadLink'
-    } else {
-        a.className = 'disabledFileDownloadLink';
-    }
-
-    document.getElementById('gpxFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
-        .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
-}
-
-function generateGeoJSONDownloadLink(geoJSONData) {
-    const blob = new Blob([JSON.stringify(geoJSONData)], {
-        type: 'application/json',
-    });
-    // console.log(`GeoJSON blob size: ${blob.size}`);
-
     const url = URL.createObjectURL(blob);
-    const a = document.getElementById('downloadGeoJSONLink');
+    const a = document.getElementById(`${extension}Link`);
     a.href = url;
-    a.download = generateFileName('geojson')
+    a.download = generateFileName(extension)
     a.textContent = a.download;
     if (blob.size > 0) {
         a.className = 'enabledFileDownloadLink'
@@ -304,27 +288,10 @@ function generateGeoJSONDownloadLink(geoJSONData) {
         a.className = 'disabledFileDownloadLink';
     }
 
-    document.getElementById('geoJSONFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
-        .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
-}
-
-function generateKMLDownloadLink(geoJSONData) {
-    const blob = new Blob([tokml(geoJSONData)], {
-        type: 'application/xml',
-    });
-    // console.log(`KML blob size: ${blob.size}`);
-
-    const url = URL.createObjectURL(blob);
-    const a = document.getElementById('downloadKMLLink');
-    a.href = url;
-    a.download = generateFileName('kml')
-    a.textContent = a.download;
-    if (blob.size > 0) {
-        a.className = 'enabledFileDownloadLink'
-    } else {
-        a.className = 'disabledFileDownloadLink';
-    }
-
-    document.getElementById('kmlFileSizeSpan').textContent = `(${(blob.size / 1024 / 1024)
-        .toLocaleString(undefined, {style: 'unit', unit: 'megabyte', maximumFractionDigits: 3})})`
+    document.getElementById(`${extension}FileSizeSpan`).textContent = `(${(blob.size / 1024 / 1024)
+        .toLocaleString(undefined, {
+            style: 'unit', 
+            unit: 'megabyte', 
+            maximumFractionDigits: 3
+        })})`
 }
