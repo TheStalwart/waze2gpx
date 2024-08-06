@@ -5,6 +5,9 @@ and convert to open [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format), [G
 
 You can try it here: [https://thestalwart.github.io/waze2gpx/](https://thestalwart.github.io/waze2gpx/)
 
+## Discussion
+- [Waze Forum thread](https://www.waze.com/forum/viewtopic.php?t=412187)
+
 ## More info
 - [Waze Help: Download your personal data](https://support.google.com/waze/answer/9002354)
 - [Alternative implementation in PowerShell](https://www.waze.com/forum/viewtopic.php?t=261936)
