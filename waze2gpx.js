@@ -143,9 +143,10 @@ function parseWazeData(csvString) {
         let dateTime = parseWazeDateTimeString(lineContents[0])
         let trekPoints = lineContents[1].split('|').map((lngLatString) => {
             /*
-                There are two formats for trekPoints:
+                There are multiple formats for trekPoints:
                 - (24.237699 56.989057) // (longitude latitude)
                 - 2024-02-18 10:32:03 UTC(56.9355 24.175612) // dateTime(latitude longitude)
+                - 2024-09-18 18:03:04+00(24.264584 56.879377) // dateTime(longitude latitude)
             */
 
             if (lngLatString.charAt(0) == '(') {
@@ -158,10 +159,12 @@ function parseWazeData(csvString) {
                 let splitString = lngLatString.split('(')
                 let dateTime = parseWazeDateTimeString(splitString[0])
                 let lngLatComponents = splitString[1].replaceAll(')', '').split(' ')
+                let lat = lngLatComponents[splitString[0].includes('+00') ? 1 : 0]
+                let lon = lngLatComponents[splitString[0].includes('+00') ? 0 : 1]
                 return {
                     'dateTime': dateTime,
-                    'lat': lngLatComponents[0],
-                    'lng': lngLatComponents[1],
+                    'lat': lat,
+                    'lng': lon,
                 }
             }
         })
@@ -181,10 +184,16 @@ function parseWazeData(csvString) {
  * @param {String} wazeDateTimeString DateTime string from Waze file
  */
 function parseWazeDateTimeString(wazeDateTimeString) {
+    /* 
+        Waze file can contain values in different formats
+        but values are always in GMT/UTC timezone
+    */
     return new Date(wazeDateTimeString
-        .replace(' ', 'T')
-        .replace(' GMT', 'Z') // Waze file is a mix of GMT and UTC values
-        .replace(' UTC', 'Z'))
+        .replace(' ', 'T') // first space between date and time parts is replaced
+        .replace(' GMT', 'Z') 
+        .replace(' UTC', 'Z')
+        .replace('+00', 'Z')
+    )
 }
 
 function dateFormattedForInputTypeDateElement(dateTime) {
