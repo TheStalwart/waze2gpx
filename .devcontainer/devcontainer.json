@@ -1,17 +1,19 @@
 {
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-        "ghcr.io/devcontainers-contrib/features/http-server:1": {}
-    },
-    "appPort": "8080:80",
-    "postAttachCommand": "http-server -c-1 /workspaces/waze2gpx",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                "eamodio.gitlens",
-                "redhat.vscode-xml",
-                "yzhang.markdown-all-in-one"
-            ]
-        }
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/http-server:1": {}
+  },
+  "appPort": "8080:80",
+  "postAttachCommand": "http-server -c-1 /workspaces/waze2gpx",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "redhat.vscode-xml",
+        "yzhang.markdown-all-in-one"
+      ]
     }
+  }
 }
