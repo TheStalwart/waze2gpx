@@ -268,7 +268,7 @@ function generateTrkSegString(wazeTrip) {
 
         var timeElement = ''
         if (timeValue) {
-            timeElement = '<time>' + wazeTrip.dateTime.toISOString() + '</time>'
+            timeElement = '<time>' + timeValue.toISOString() + '</time>'
         }
         return `<trkpt lat="${point.lat}" lon="${point.lng}">${timeElement}</trkpt>`
     });
