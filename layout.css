@@ -1,51 +1,52 @@
 body {
-    font-family: sans-serif;
+  font-family: sans-serif;
 }
 
 #map {
-    width: 100%;
-    height: 400px;
-    margin-top: 1em;
-    position: relative;
+  width: 100%;
+  height: 400px;
+  margin-top: 1em;
+  position: relative;
 }
 
 @media (min-width: 800px) {
-    body {
-        padding-right: 50%;
-    }
+  body {
+    padding-right: 50%;
+  }
 
-    #map {
-        width: 50%; 
-        height: 100%;
-        margin-top: 0;
-        position: fixed;
-        top: 0;
-        right: 0;
-    }
+  #map {
+    width: 50%;
+    height: 100%;
+    margin-top: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
 }
 
 #parsedTripCounterContainer {
-    display: none;
+  display: none;
 }
 
 .dateInput {
-    display: inline-block;
+  display: inline-block;
 }
 
 a.disabledFileDownloadLink {
-    pointer-events: none;
-    color: #ccc;
+  pointer-events: none;
+  color: #ccc;
 }
 
-.disabledFileDownloadLink, .enabledFileDownloadLink {
-    display: inline-block;
+.disabledFileDownloadLink,
+.enabledFileDownloadLink {
+  display: inline-block;
 }
 
 .fileSizeSpan {
-    display: inline-block;
+  display: inline-block;
 }
 
 fieldset {
-    display: inline-block;
-    vertical-align:top;
+  display: inline-block;
+  vertical-align: top;
 }
