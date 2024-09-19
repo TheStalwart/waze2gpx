@@ -9,6 +9,7 @@
         "vscode": {
             "extensions": [
                 "eamodio.gitlens",
+                "redhat.vscode-xml",
                 "yzhang.markdown-all-in-one"
             ]
         }
