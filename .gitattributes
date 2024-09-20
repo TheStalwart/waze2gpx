@@ -1,0 +1,3 @@
+# https://stackoverflow.com/questions/9933004/how-to-to-disable-git-end-of-line-crlf-to-lf-across-all-clones-machines
+# https://stackoverflow.com/questions/7156694/git-how-to-renormalize-line-endings-in-all-files-in-all-revisions
+* -text
