@@ -57,7 +57,7 @@ function wazeCSVFileSubmitted(event) {
         document.getElementById('endDateInput').min = firstTripDateFormattedForInput
         document.getElementById('endDateInput').max = lastTripDateFormattedForInput
         document.getElementById('endDateInput').onchange = function() { updatePreview() };
-        
+
         ['start', 'end'].forEach((inputGroup) => {
             ['Prev', 'Next'].forEach((direction) => {
                 let fullButtonID = `${inputGroup}${direction}TripButton`
@@ -81,7 +81,7 @@ function wazeCSVFileSubmitted(event) {
                             return moment(trip.dateTime).isBefore(roundedCurrentInputValue)
                         })
                     }
-                    
+
 
                     if (foundTrip) {
                         inputElement.value = dateFormattedForInputTypeDateTimeLocalElement(foundTrip.dateTime)
@@ -184,13 +184,13 @@ function parseWazeData(csvString) {
  * @param {String} wazeDateTimeString DateTime string from Waze file
  */
 function parseWazeDateTimeString(wazeDateTimeString) {
-    /* 
+    /*
         Waze file can contain values in different formats
         but values are always in GMT/UTC timezone
     */
     return new Date(wazeDateTimeString
         .replace(' ', 'T') // first space between date and time parts is replaced
-        .replace(' GMT', 'Z') 
+        .replace(' GMT', 'Z')
         .replace(' UTC', 'Z')
         .replace('+00', 'Z')
     )
@@ -201,8 +201,8 @@ function dateFormattedForInputTypeDateElement(dateTime) {
 }
 
 function dateFormattedForInputTypeDateTimeLocalElement(dateTime) {
-    /* 
-        NB: this formatting function drops seconds 
+    /*
+        NB: this formatting function drops seconds
         and resulting string value is slightly in the past from passed Date parameter
     */
     return `${dateTime.getUTCFullYear()}-${(dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${dateTime.getUTCDate().toString().padStart(2, '0')}T${dateTime.getUTCHours().toString().padStart(2, '0')}:${dateTime.getUTCMinutes().toString().padStart(2, '0')}`
@@ -224,8 +224,8 @@ function generateGPXString(parsedWazeData) {
     var trkElements = []
 
     if (mergeTripsPreference == 'trkseg') {
-        /* 
-            Generate a single track 
+        /*
+            Generate a single track
             with individual waze trips interpreted as track segments
         */
         let firstEntryDateTime = parsedWazeData[0].dateTime;
@@ -330,8 +330,8 @@ function generateDownloadLink(stringData, mimeType, extension) {
 
     document.getElementById(`${extension}FileSizeSpan`).textContent = `(${(blob.size / 1024)
         .toLocaleString(undefined, {
-            style: 'unit', 
-            unit: 'kilobyte', 
+            style: 'unit',
+            unit: 'kilobyte',
             maximumFractionDigits: 0
         })})`
 }
