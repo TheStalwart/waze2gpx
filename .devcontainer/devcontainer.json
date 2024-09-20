@@ -8,6 +8,7 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "CelianRiboulet.webvalidator",
         "DavidAnson.vscode-markdownlint",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
