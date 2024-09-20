@@ -216,11 +216,16 @@ function dateFormattedForInputTypeDateElement(dateTime) {
     return `${dateTime.getUTCFullYear()}-${(dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${dateTime.getUTCDate().toString().padStart(2, '0')}`
 }
 
+/**
+ * Convert Date object to string value for use in HTML datetime-local inputs
+ *
+ * NB: this formatting function drops seconds
+ * and resulting string value is slightly in the past from passed Date parameter
+ *
+ * @param {Date} dateTime
+ * @returns {string} value to be used in HTML datetime-local inputs
+ */
 function dateFormattedForInputTypeDateTimeLocalElement(dateTime) {
-    /*
-        NB: this formatting function drops seconds
-        and resulting string value is slightly in the past from passed Date parameter
-    */
     return `${dateTime.getUTCFullYear()}-${(dateTime.getUTCMonth() + 1).toString().padStart(2, '0')}-${dateTime.getUTCDate().toString().padStart(2, '0')}T${dateTime.getUTCHours().toString().padStart(2, '0')}:${dateTime.getUTCMinutes().toString().padStart(2, '0')}`
 }
 
