@@ -17,6 +17,11 @@ window.onload = function () {
     document.getElementById('fileForm').addEventListener('submit', wazeCSVFileSubmitted)
 }
 
+/**
+ * Handles file form "submit" event
+ *
+ * @param {SubmitEvent} event File form event
+ */
 function wazeCSVFileSubmitted(event) {
     event.preventDefault(); // Prevent the form from submitting the traditional way
 
@@ -192,6 +197,7 @@ function parseWazeData(csvString) {
 /**
  * Parse DateTime string from Waze file and return `Date` object
  * @param {String} wazeDateTimeString DateTime string from Waze file
+ * @returns {Date} parsed and normalized Date object
  */
 function parseWazeDateTimeString(wazeDateTimeString) {
     /*
