@@ -8,6 +8,10 @@
     "files.trimTrailingWhitespace": true,
     "files.eol": "\n",
     "editor.formatOnSave": true,
+    "files.associations": {
+      // stop markdownlint from complaining about a plain text LICENSE file
+      "LICENSE": "plaintext"
+    },
     "[css]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
