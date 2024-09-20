@@ -57,96 +57,96 @@ function wazeCSVFileSubmitted(event) {
     };
 
     reader.readAsText(file);
+}
 
-    function setupSettingsSection() {
-        document.getElementById('parsedTripCounter').innerText = parsedWazeData.length.toString()
-        document.getElementById('parsedTripCounterContainer').style.display = 'block'
+function setupSettingsSection() {
+    document.getElementById('parsedTripCounter').innerText = parsedWazeData.length.toString()
+    document.getElementById('parsedTripCounterContainer').style.display = 'block'
 
-        if (parsedWazeData <= 0) return
+    if (parsedWazeData <= 0) return
 
-        let firstTrip = parsedWazeData[0]
-        let firstTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(firstTrip.dateTime)
-        let lastTrip = parsedWazeData[parsedWazeData.length - 1]
-        let lastTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(lastTrip.dateTime)
-        document.getElementById('startDateInput').value = firstTripDateFormattedForInput
-        document.getElementById('startDateInput').min = firstTripDateFormattedForInput
-        document.getElementById('startDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('startDateInput').onchange = function () { updatePreview() }
-        document.getElementById('endDateInput').value = lastTripDateFormattedForInput
-        document.getElementById('endDateInput').min = firstTripDateFormattedForInput
-        document.getElementById('endDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('endDateInput').onchange = function () { updatePreview() };
+    let firstTrip = parsedWazeData[0]
+    let firstTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(firstTrip.dateTime)
+    let lastTrip = parsedWazeData[parsedWazeData.length - 1]
+    let lastTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(lastTrip.dateTime)
+    document.getElementById('startDateInput').value = firstTripDateFormattedForInput
+    document.getElementById('startDateInput').min = firstTripDateFormattedForInput
+    document.getElementById('startDateInput').max = lastTripDateFormattedForInput
+    document.getElementById('startDateInput').onchange = function () { updatePreview() }
+    document.getElementById('endDateInput').value = lastTripDateFormattedForInput
+    document.getElementById('endDateInput').min = firstTripDateFormattedForInput
+    document.getElementById('endDateInput').max = lastTripDateFormattedForInput
+    document.getElementById('endDateInput').onchange = function () { updatePreview() };
 
-        ['start', 'end'].forEach((inputGroup) => {
-            ['Prev', 'Next'].forEach((direction) => {
-                let fullButtonID = `${inputGroup}${direction}TripButton`
-                let buttonElement = document.getElementById(fullButtonID)
+    ['start', 'end'].forEach((inputGroup) => {
+        ['Prev', 'Next'].forEach((direction) => {
+            let fullButtonID = `${inputGroup}${direction}TripButton`
+            let buttonElement = document.getElementById(fullButtonID)
 
-                buttonElement.onclick = function () {
-                    let inputElement = document.getElementById(`${inputGroup}DateInput`)
-                    let currentInputValue = inputElement.value
-                    let foundTrip = null
+            buttonElement.onclick = function () {
+                let inputElement = document.getElementById(`${inputGroup}DateInput`)
+                let currentInputValue = inputElement.value
+                let foundTrip = null
 
-                    // console.log(`${buttonElement.id} clicked, looking for a value ${direction} to ${currentInputValue}`)
+                // console.log(`${buttonElement.id} clicked, looking for a value ${direction} to ${currentInputValue}`)
 
-                    if (direction == 'Next') {
-                        foundTrip = parsedWazeData.find((trip) => {
-                            let roundedCurrentInputValue = moment.utc(currentInputValue).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
-                            return moment(trip.dateTime).isAfter(roundedCurrentInputValue)
-                        })
-                    } else { // 'Prev'
-                        foundTrip = parsedWazeData.findLast((trip) => {
-                            let roundedCurrentInputValue = moment.utc(currentInputValue)
-                            return moment(trip.dateTime).isBefore(roundedCurrentInputValue)
-                        })
-                    }
+                if (direction == 'Next') {
+                    foundTrip = parsedWazeData.find((trip) => {
+                        let roundedCurrentInputValue = moment.utc(currentInputValue).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
+                        return moment(trip.dateTime).isAfter(roundedCurrentInputValue)
+                    })
+                } else { // 'Prev'
+                    foundTrip = parsedWazeData.findLast((trip) => {
+                        let roundedCurrentInputValue = moment.utc(currentInputValue)
+                        return moment(trip.dateTime).isBefore(roundedCurrentInputValue)
+                    })
+                }
 
 
-                    if (foundTrip) {
-                        inputElement.value = dateFormattedForInputTypeDateTimeLocalElement(foundTrip.dateTime)
-                        updatePreview()
-                        // console.log(`found trip: ${foundTrip.dateTime}`)
-                    } else {
-                        // console.log(`${direction} trip not found`)
-                    }
-                };
-            });
+                if (foundTrip) {
+                    inputElement.value = dateFormattedForInputTypeDateTimeLocalElement(foundTrip.dateTime)
+                    updatePreview()
+                    // console.log(`found trip: ${foundTrip.dateTime}`)
+                } else {
+                    // console.log(`${direction} trip not found`)
+                }
+            };
         });
+    });
 
-        document.querySelectorAll('fieldset').forEach((fieldsetElement) => {
-            fieldsetElement.disabled = false;
-            fieldsetElement.onchange = function () {
-                updatePreview()
-            }
-        });
-    }
+    document.querySelectorAll('fieldset').forEach((fieldsetElement) => {
+        fieldsetElement.disabled = false;
+        fieldsetElement.onchange = function () {
+            updatePreview()
+        }
+    });
+}
 
-    function updatePreview() {
-        updateFilteredWazeData()
-        updateSelectedTripCounter()
-        updateMapPreview()
-        generateDownloadLink(unformattedXMLString, 'application/xml', 'gpx')
-    }
+function updatePreview() {
+    updateFilteredWazeData()
+    updateSelectedTripCounter()
+    updateMapPreview()
+    generateDownloadLink(unformattedXMLString, 'application/xml', 'gpx')
+}
 
-    function updateFilteredWazeData() {
-        filteredWazeData = parsedWazeData.filter((trip) => {
-            let filterStartDate = moment.utc(document.getElementById('startDateInput').value)
-            let filterEndDate = moment.utc(document.getElementById('endDateInput').value).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
+function updateFilteredWazeData() {
+    filteredWazeData = parsedWazeData.filter((trip) => {
+        let filterStartDate = moment.utc(document.getElementById('startDateInput').value)
+        let filterEndDate = moment.utc(document.getElementById('endDateInput').value).add(1, 'minutes') // HTML <input> drops seconds from the value, so round up selected minute value
 
-            // console.log(`filterStartDate: ${filterStartDate}, filterEndDate: ${filterEndDate}`)
+        // console.log(`filterStartDate: ${filterStartDate}, filterEndDate: ${filterEndDate}`)
 
-            return ((trip.dateTime >= filterStartDate) && (trip.dateTime <= filterEndDate))
-        });
-    }
+        return ((trip.dateTime >= filterStartDate) && (trip.dateTime <= filterEndDate))
+    });
+}
 
-    function updateSelectedTripCounter() {
-        document.getElementById('selectedTripCounter').innerText = filteredWazeData.length.toString()
-    }
+function updateSelectedTripCounter() {
+    document.getElementById('selectedTripCounter').innerText = filteredWazeData.length.toString()
+}
 
-    function updateMapPreview() {
-        unformattedXMLString = generateGPXString(filteredWazeData)
-        renderGPXOnLeaflet(unformattedXMLString)
-    }
+function updateMapPreview() {
+    unformattedXMLString = generateGPXString(filteredWazeData)
+    renderGPXOnLeaflet(unformattedXMLString)
 }
 
 /**
