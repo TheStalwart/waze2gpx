@@ -20,7 +20,7 @@
         -->
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
             integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-            crossorigin=""/>
+            crossorigin="">
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
             integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
             crossorigin=""></script>
@@ -36,12 +36,12 @@
         <h1>Convert Waze trip history to GPX, GeoJSON and KML file formats</h1>
 
         <h2>Step 1: Export personal data from Waze</h2>
-        <p>
-            Request and download data archive from <a href="https://www.waze.com/account/download_data">https://www.waze.com/account/download_data</a>,<br/>
-            then extract the "account_activity_3.csv" file from password-protected archive
-        </p>
+
+        Request and download data archive from <a href="https://www.waze.com/account/download_data">https://www.waze.com/account/download_data</a>,<br>
+        then extract the "account_activity_3.csv" file from password-protected archive
 
         <h2>Step 2: Upload the account_activity_3.csv file</h2>
+
         <form id="fileForm">
             <input type="file" id="fileUpload" name="fileUpload" accept=".csv">
             <button type="submit">Upload</button>
@@ -52,73 +52,68 @@
         </div>
 
         <h2>Step 3: Adjust settings</h2>
-        <p>
-            <fieldset disabled>
-                <legend>Trim trip history</legend>
 
-                <div>
-                    First trip start date:
-                    <span class="dateInput">
-                        <button id="startPrevTripButton" title="Previous trip">&lt;&lt;</button>
-                        <input type="datetime-local" id="startDateInput" name="start-date" />
-                        <button id="startNextTripButton" title="Next trip">&gt;&gt;</button>
-                    </span>
-                </div>
+        <fieldset disabled>
+            <legend>Trim trip history</legend>
 
-                <div>
-                    Last trip start date:
-                    <span class="dateInput">
-                        <button id="endPrevTripButton" title="Previous trip">&lt;&lt;</button>
-                        <input type="datetime-local" id="endDateInput" name="end-date" />
-                        <button id="endNextTripButton" title="Next trip">&gt;&gt;</button>
-                    </span>
-                </div>
+            <div>
+                First trip start date:
+                <span class="dateInput">
+                    <button id="startPrevTripButton" title="Previous trip">&lt;&lt;</button>
+                    <input type="datetime-local" id="startDateInput" name="start-date">
+                    <button id="startNextTripButton" title="Next trip">&gt;&gt;</button>
+                </span>
+            </div>
 
-                <div>
-                    Selected trips: <span id="selectedTripCounter"></span>
-                </div>
+            <div>
+                Last trip start date:
+                <span class="dateInput">
+                    <button id="endPrevTripButton" title="Previous trip">&lt;&lt;</button>
+                    <input type="datetime-local" id="endDateInput" name="end-date">
+                    <button id="endNextTripButton" title="Next trip">&gt;&gt;</button>
+                </span>
+            </div>
+
+            <div>
+                Selected trips: <span id="selectedTripCounter"></span>
+            </div>
+        </fieldset>
+
+        <fieldset disabled>
+            <legend>Merge trips?</legend>
+
+            <div>
+                <input type="radio" id="trkseg" name="mergeTrips" value="trkseg" checked>
+                <label for="trkseg">Merge all trips into one track</label>
+            </div>
+
+            <div>
+                <input type="radio" id="trk" name="mergeTrips" value="trk">
+                <label for="trk">Keep every trip as separate track</label>
+            </div>
             </fieldset>
 
-            <fieldset disabled>
-                <legend>Merge trips?</legend>
-
-                <div>
-                  <input type="radio" id="trkseg" name="mergeTrips" value="trkseg" checked />
-                  <label for="trkseg">Merge all trips into one track</label>
-                </div>
-
-                <div>
-                  <input type="radio" id="trk" name="mergeTrips" value="trk" />
-                  <label for="trk">Keep every trip as separate track</label>
-                </div>
-              </fieldset>
-
-            <div id="map"></div>
-        </p>
+        <div id="map"></div>
 
         <h2>Step 4: Download trip data in open formats</h2>
-        <p>
-            <div>
-                <div id="gpxFileLinkContainer">
-                    GPX file: <a id="gpxLink" href="#" class="disabledFileDownloadLink">waze_history_???.gpx</a>
-                    <span id="gpxFileSizeSpan" class="fileSizeSpan">(0 kB)</span>
-                </div>
-                <div id="geoJSONFileLinkContainer">
-                    GeoJSON file: <a id="geojsonLink" href="#" class="disabledFileDownloadLink">waze_history_???.geojson</a>
-                    <span id="geojsonFileSizeSpan" class="fileSizeSpan">(0 kB)</span>
-                </div>
-                <div id="kmlFileLinkContainer">
-                    KML file: <a id="kmlLink" href="#" class="disabledFileDownloadLink">waze_history_???.kml</a>
-                    <span id="kmlFileSizeSpan" class="fileSizeSpan">(0 kB)</span>
-                </div>
-            </div>
-        </p>
+
+        <div id="gpxFileLinkContainer">
+            GPX file: <a id="gpxLink" href="#" class="disabledFileDownloadLink">waze_history_???.gpx</a>
+            <span id="gpxFileSizeSpan" class="fileSizeSpan">(0 kB)</span>
+        </div>
+        <div id="geoJSONFileLinkContainer">
+            GeoJSON file: <a id="geojsonLink" href="#" class="disabledFileDownloadLink">waze_history_???.geojson</a>
+            <span id="geojsonFileSizeSpan" class="fileSizeSpan">(0 kB)</span>
+        </div>
+        <div id="kmlFileLinkContainer">
+            KML file: <a id="kmlLink" href="#" class="disabledFileDownloadLink">waze_history_???.kml</a>
+            <span id="kmlFileSizeSpan" class="fileSizeSpan">(0 kB)</span>
+        </div>
 
         <hr>
 
-        <p>
-            Source code: <a href="https://github.com/TheStalwart/waze2gpx">https://github.com/TheStalwart/waze2gpx</a>
-        </p>
+        Source code: <a href="https://github.com/TheStalwart/waze2gpx">https://github.com/TheStalwart/waze2gpx</a>
+
     </body>
 
 </html>
