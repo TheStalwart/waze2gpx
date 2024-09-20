@@ -18,5 +18,14 @@ You can try it here: [https://thestalwart.github.io/waze2gpx/](https://thestalwa
 
 ## Development environment
 
-To run a local web server at http://127.0.0.1:3000:
-`docker-compose up`
+### Docker-based
+
+To run a local web server at [http://127.0.0.1:3000](http://127.0.0.1:3000): `docker-compose up`
+
+### DevContainer-based
+
+`.devcontainer/devcontainer.json` contains a `postAttachCommand` to run a web server on port `8080`, but if it fails - run `http-server -c-1 /workspaces/waze2gpx` manually
+
+### Local VSCode Extension
+
+Try [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension to run a web server on port `5500`
