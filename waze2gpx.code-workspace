@@ -25,7 +25,8 @@
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "[html]": {
-      "editor.formatOnSave": false
+      "editor.formatOnSave": true,
+      "editor.defaultFormatter": "vscode.html-language-features"
     },
     "[markdown]": {
       "editor.tabSize": 2
