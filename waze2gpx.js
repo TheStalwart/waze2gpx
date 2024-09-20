@@ -23,7 +23,7 @@ function wazeCSVFileSubmitted(event) {
     const fileInput = document.getElementById('fileUpload');
     const file = fileInput.files[0];
 
-    if ( ! file) {
+    if (!file) {
         const errorMessage = 'No file selected!'
         console.log(errorMessage);
         document.getElementById('fileFormErrorBox').innerText = errorMessage
@@ -52,18 +52,18 @@ function wazeCSVFileSubmitted(event) {
         document.getElementById('startDateInput').value = firstTripDateFormattedForInput
         document.getElementById('startDateInput').min = firstTripDateFormattedForInput
         document.getElementById('startDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('startDateInput').onchange = function() { updatePreview() }
+        document.getElementById('startDateInput').onchange = function () { updatePreview() }
         document.getElementById('endDateInput').value = lastTripDateFormattedForInput
         document.getElementById('endDateInput').min = firstTripDateFormattedForInput
         document.getElementById('endDateInput').max = lastTripDateFormattedForInput
-        document.getElementById('endDateInput').onchange = function() { updatePreview() };
+        document.getElementById('endDateInput').onchange = function () { updatePreview() };
 
         ['start', 'end'].forEach((inputGroup) => {
             ['Prev', 'Next'].forEach((direction) => {
                 let fullButtonID = `${inputGroup}${direction}TripButton`
                 let buttonElement = document.getElementById(fullButtonID)
 
-                buttonElement.onclick = function() {
+                buttonElement.onclick = function () {
                     let inputElement = document.getElementById(`${inputGroup}DateInput`)
                     let currentInputValue = inputElement.value
                     var foundTrip = null
@@ -96,7 +96,7 @@ function wazeCSVFileSubmitted(event) {
 
         document.querySelectorAll('fieldset').forEach((fieldsetElement) => {
             fieldsetElement.disabled = false;
-            fieldsetElement.onchange = function() {
+            fieldsetElement.onchange = function () {
                 updatePreview()
             }
         });
