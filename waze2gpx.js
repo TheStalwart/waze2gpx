@@ -52,8 +52,17 @@ function wazeCSVFileSubmitted(event) {
 
         // console.log('Location details:', parsedWazeData);
 
+        setupSettingsSection()
+        updatePreview()
+    };
+
+    reader.readAsText(file);
+
+    function setupSettingsSection() {
         document.getElementById('parsedTripCounter').innerText = parsedWazeData.length.toString()
         document.getElementById('parsedTripCounterContainer').style.display = 'block'
+
+        if (parsedWazeData <= 0) return
 
         let firstTrip = parsedWazeData[0]
         let firstTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(firstTrip.dateTime)
@@ -110,11 +119,7 @@ function wazeCSVFileSubmitted(event) {
                 updatePreview()
             }
         });
-
-        updatePreview()
-    };
-
-    reader.readAsText(file);
+    }
 
     function updatePreview() {
         updateFilteredWazeData()
