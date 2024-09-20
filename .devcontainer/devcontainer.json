@@ -11,6 +11,7 @@
         "DavidAnson.vscode-markdownlint",
         "eamodio.gitlens",
         "esbenp.prettier-vscode",
+        "mechatroner.rainbow-csv",
         "redhat.vscode-xml",
         "yzhang.markdown-all-in-one"
       ]
