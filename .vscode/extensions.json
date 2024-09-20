@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "mechatroner.rainbow-csv",
     "redhat.vscode-xml",
+    "ritwickdey.LiveServer",
     "yzhang.markdown-all-in-one"
   ]
 }
