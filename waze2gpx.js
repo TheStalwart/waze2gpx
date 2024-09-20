@@ -45,6 +45,11 @@ function wazeCSVFileSubmitted(event) {
         const contents = e.target.result;
         parsedWazeData = parseWazeData(contents)
 
+        // console.log('Location details:', parsedWazeData);
+
+        document.getElementById('parsedTripCounter').innerText = parsedWazeData.length.toString()
+        document.getElementById('parsedTripCounterContainer').style.display = 'block'
+
         let firstTrip = parsedWazeData[0]
         let firstTripDateFormattedForInput = dateFormattedForInputTypeDateTimeLocalElement(firstTrip.dateTime)
         let lastTrip = parsedWazeData[parsedWazeData.length - 1]
@@ -134,10 +139,20 @@ function wazeCSVFileSubmitted(event) {
     }
 }
 
+/**
+ * Parses contents of Waze account_activity_*.csv file
+ *
+ * @param {string} csvString entire CSV file contents as a single string
+ * @returns {{dateTime: Date; trekPoints: {dateTime?: Date; lat: string; lng: string}[]}[]} array of trips
+ */
 function parseWazeData(csvString) {
     const sectionStrings = csvString.split("\n\n")
     const sectionLineArrays = sectionStrings.map((sectionString) => sectionString.split("\n"));
-    const locationDetailsEntries = sectionLineArrays.find((lineArray) => lineArray[0] == 'Location details').slice(2)
+    const locationDetailsLineArray = sectionLineArrays.find((lineArray) => lineArray[0] == 'Location details')
+
+    if (!locationDetailsLineArray) return []
+
+    const locationDetailsEntries = locationDetailsLineArray.slice(2)
     const locationDetailsParsedEntries = locationDetailsEntries.map((trek) => {
         let lineContents = trek.split(',')
         let dateTime = parseWazeDateTimeString(lineContents[0])
@@ -170,11 +185,6 @@ function parseWazeData(csvString) {
         })
         return { 'dateTime': dateTime, 'trekPoints': trekPoints }
     })
-
-    document.getElementById('parsedTripCounter').innerText = locationDetailsParsedEntries.length.toString()
-    document.getElementById('parsedTripCounterContainer').style.display = 'block'
-
-    // console.log('Location details:', locationDetailsParsedEntries);
 
     return locationDetailsParsedEntries
 }
