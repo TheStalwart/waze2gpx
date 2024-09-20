@@ -14,49 +14,39 @@ let unformattedXMLString = null
 import { gpx } from "https://unpkg.com/@tmcw/togeojson?module";
 
 window.onload = function () {
-    document.getElementById('fileForm').addEventListener('submit', wazeCSVFileSubmitted)
+    document.getElementById('fileForm').addEventListener('change', wazeCSVFileSubmitted)
 }
 
 /**
- * Handles file form "submit" event
+ * Handles file form "change" event
  *
- * @param {SubmitEvent} event File form event
+ * @param {Event} event File form event
  */
-function wazeCSVFileSubmitted(event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
+async function wazeCSVFileSubmitted(event) {
+    parsedWazeData = []
 
-    const fileInput = document.getElementById('fileUpload');
-    const file = fileInput.files[0];
-
-    if (!file) {
-        const errorMessage = 'No file selected!'
-        console.log(errorMessage);
-        document.getElementById('fileFormErrorBox').innerText = errorMessage
-        return
+    for (const fileObject of event.target.files) {
+        let fileObjectTextContents = await fileObject.text()
+        parsedWazeData.splice(0, 0, ...parseWazeData(fileObjectTextContents))
     }
 
-    document.getElementById('fileFormErrorBox').innerText = null
+    if (parsedWazeData.length <= 0) {
+        const errorMessage = "Failed to load any trips!"
+        // console.log(errorMessage);
+        document.getElementById('fileFormErrorBox').innerText = errorMessage
+    } else {
+        // Reset any previously set upload form error messages
+        document.getElementById('fileFormErrorBox').innerText = null
+    }
 
-    const reader = new FileReader();
+    parsedWazeData.sort((a, b) => a.dateTime - b.dateTime)
 
-    reader.onerror = function (e) {
-        const errorMessage = 'An error occurred while reading the file: '
-        console.error(errorMessage, e);
-        document.getElementById('fileFormErrorBox').innerText = errorMessage + e
-    };
+    // There is no trip deduplication feature currently
 
-    reader.onload = function (e) {
-        // Parse Waze CSV file
-        const contents = e.target.result;
-        parsedWazeData = parseWazeData(contents)
+    // console.log('parsedWazeData:', parsedWazeData);
 
-        // console.log('Location details:', parsedWazeData);
-
-        setupSettingsSection()
-        updatePreview()
-    };
-
-    reader.readAsText(file);
+    setupSettingsSection()
+    updatePreview()
 }
 
 function setupSettingsSection() {

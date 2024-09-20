@@ -37,13 +37,12 @@
 
     Request and download data archive from <a
         href="https://www.waze.com/account/download_data">https://www.waze.com/account/download_data</a>,<br>
-    then extract the "account_activity_3.csv" file from password-protected archive
+    then extract "account_activity_*.csv" files from password-protected archive
 
-    <h2>Step 2: Upload the account_activity_3.csv file</h2>
+    <h2>Step 2: Upload account_activity_*.csv files</h2>
 
     <form id="fileForm">
-        <input type="file" id="fileUpload" name="fileUpload" accept=".csv">
-        <button type="submit">Upload</button>
+        <input type="file" id="fileUpload" name="fileUpload" accept=".csv" multiple>
         <span id="fileFormErrorBox"></span>
     </form>
     <div id="parsedTripCounterContainer">
