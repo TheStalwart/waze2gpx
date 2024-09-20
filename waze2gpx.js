@@ -1,14 +1,14 @@
 // https://leafletjs.com/reference.html
-var map = L.map('map').setView([57.0, 24.5], 6);
+let map = L.map('map').setView([57.0, 24.5], 6);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-var geoJSONLayer = null
+let geoJSONLayer = null
 
-var parsedWazeData = null
-var filteredWazeData = null
-var unformattedXMLString = null
+let parsedWazeData = null
+let filteredWazeData = null
+let unformattedXMLString = null
 
 // https://github.com/placemark/togeojson
 import { gpx } from "https://unpkg.com/@tmcw/togeojson?module";
@@ -85,7 +85,7 @@ function wazeCSVFileSubmitted(event) {
                 buttonElement.onclick = function () {
                     let inputElement = document.getElementById(`${inputGroup}DateInput`)
                     let currentInputValue = inputElement.value
-                    var foundTrip = null
+                    let foundTrip = null
 
                     // console.log(`${buttonElement.id} clicked, looking for a value ${direction} to ${currentInputValue}`)
 
@@ -247,7 +247,7 @@ function generateGPXString(parsedWazeData) {
     let timeElement = '<time>' + fileGenerationDateTime.toISOString() + '</time>'
     let metadataElement = '<metadata>' + timeElement + '</metadata>'
 
-    var trkElements = []
+    let trkElements = []
 
     if (mergeTripsPreference == 'trkseg') {
         /*
@@ -285,14 +285,14 @@ function generateGPXString(parsedWazeData) {
 
 function generateTrkSegString(wazeTrip) {
     let trkptElements = wazeTrip.trekPoints.map((point) => {
-        var timeValue = null
+        let timeValue = null
         if (point.dateTime) {
             timeValue = point.dateTime
         } else if (wazeTrip.trekPoints.indexOf(point) == 0) {
             timeValue = wazeTrip.dateTime
         }
 
-        var timeElement = ''
+        let timeElement = ''
         if (timeValue) {
             timeElement = '<time>' + timeValue.toISOString() + '</time>'
         }
@@ -320,7 +320,7 @@ function renderGPXOnLeaflet(gpxString) {
     }
 
     if (gpxString != '') {
-        var geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
+        let geoJSONData = gpx(new DOMParser().parseFromString(gpxString, "text/xml"));
         // console.log(geoJSONData)
 
         generateDownloadLink(JSON.stringify(geoJSONData), 'application/json', 'geojson')
