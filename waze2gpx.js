@@ -25,6 +25,16 @@ window.onload = function () {
 async function wazeCSVFileSubmitted(event) {
     parsedWazeData = []
 
+    /*
+        Files containing trip data:
+        - account_activity_2.csv // data of north american accounts
+        - account_activity_3.csv // data of european accounts
+
+        Both CSV files have the same structure.
+        I assume the data is exported in different files
+        for european and north american users
+        because it's stored in different data centers.
+    */
     for (const fileObject of event.target.files) {
         let fileObjectTextContents = await fileObject.text()
         parsedWazeData.splice(0, 0, ...parseWazeData(fileObjectTextContents))
