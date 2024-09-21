@@ -160,8 +160,8 @@ function parseWazeData(csvString) {
             /*
                 There are multiple formats for trekPoints:
                 - (24.237699 56.989057) // (longitude latitude)
-                - 2024-02-18 10:32:03 UTC(56.9355 24.175612) // dateTime(latitude longitude)
-                - 2024-09-18 18:03:04+00(24.264584 56.879377) // dateTime(longitude latitude)
+                - 2024-02-18 10:32:03 UTC(56.9355 24.175612) // dateTime(latitude longitude) // archives exported before late August 2024
+                - 2024-09-18 18:03:04+00(24.264584 56.879377) // dateTime(longitude latitude) // archives exported since late August 2024
             */
 
             if (lngLatString.charAt(0) == '(') {
