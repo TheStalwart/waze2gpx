@@ -9,8 +9,6 @@ You can try it here: [https://thestalwart.github.io/waze2gpx/](https://thestalwa
 
 - [Waze Help: Download your personal data](https://support.google.com/waze/answer/9002354)
 - [Alternative implementation in PowerShell](https://www.waze.com/forum/viewtopic.php?t=261936)
-- Instructions for [Tracs - a command line application for managing GPS tracks](https://tracs.readthedocs.io/en/latest/waze/)
-- [GPX Format Documentation](https://www.topografix.com/gpx.asp)
 
 ## Development environment
 
