@@ -22,4 +22,4 @@ To run a local web server at [http://127.0.0.1:3000](http://127.0.0.1:3000): `do
 
 ### Local VSCode Extension
 
-Try [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension to run a web server on port `5500`
+Try [Five Server](https://marketplace.visualstudio.com/items?itemName=yandeu.five-server) extension to run a web server on port `5500`
