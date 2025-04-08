@@ -192,11 +192,37 @@ function parseWazeData(csvString) {
                     'lng': lon,
                 }
             }
+        }).filter((trekPoint) => {
+            /*
+                In April 2025 i discovered the following entry in my account_activity_3.csv file:
+
+                    2106-02-07 00:47:05 UTC,2106-02-07 00:47:05+00(24.161379 56.966374)|2161-04-06 19:14:24+00(24.161251 56.966407)
+
+                My 2004 Citroen Berlingo can't reach 88 miles per hour,
+                i have no idea where this data came from
+                and i consider it invalid and useless,
+                so filter out trekPoints that are far into the future.
+            */
+            if (trekPoint.dateTime && moment().add(10, 'years').isBefore(dateTime)) {
+                return false
+            }
+
+            return true
         })
         return { 'dateTime': dateTime, 'trekPoints': trekPoints }
     })
 
-    return locationDetailsParsedEntries
+    const locationDetailsFilteredEntries = locationDetailsParsedEntries.filter((track) => {
+        /*
+            Some tracks will be left with 0 trekPoints
+            after filtering out invalid values.
+        */
+        return track.trekPoints.length > 0
+    })
+
+    // console.log(locationDetailsFilteredEntries)
+
+    return locationDetailsFilteredEntries
 }
 
 /**
