@@ -1,7 +1,18 @@
 # waze2gpx: Waze trip history to GPX converter
 
-Extract trip history from [Waze](https://www.waze.com/company)
-and convert to open [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format), [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) and [KML](https://en.wikipedia.org/wiki/Keyhole_Markup_Language) formats.
+[Waze](https://www.waze.com/) is a popular GPS navigation app owned by Google.
+
+It stores trip history for the last 3 months,
+but does not offer native export to [GPX](https://en.wikipedia.org/wiki/GPS_Exchange_Format), [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON), or [KML](https://en.wikipedia.org/wiki/Keyhole_Markup_Language) formats.
+
+This tool converts the proprietary CSV files from Waze's personal data export
+into open, widely supported formats,
+compatible with Google Maps, Garmin devices, OsmAnd, QGIS,
+and other mapping applications,
+to analyze and share past trips.
+
+Conversion runs entirely in your browser,
+your data never leaves your device.
 
 You can try it here: [https://thestalwart.github.io/waze2gpx/](https://thestalwart.github.io/waze2gpx/)
 
